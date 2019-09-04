@@ -1,35 +1,7 @@
-require_relative "ingredient-hash"
+require 'pry'
 require 'colorize'
 require 'tty-prompt'
 prompt = TTY::Prompt.new
-
-ingredients = [
-    [{item: "Beef", cost: 3}],
-    [{item: "Chicken", cost: 3}],
-    [{item: "Lamb", cost: 4 }],
-    [{item: "Vegetarian", cost: 3}],
-    [{item: "No Patty", cost: 0}],
-    [{item: "Cheddar", cost: 1}],
-    [{item: "Tasty", cost: 1}],
-    [{item: "Feta", cost: 2}],
-    [{item: "No Cheese", cost: 0}],
-    [{item: "Lettuce", cost: 1}],
-    [{item: "Tomato", cost: 1}],
-    [{item: "Onion", cost: 1}],
-    [{item: "Mushroom", cost: 2}],
-    [{item: "Avocado", cost: 3}],
-    [{item: "Pickles", cost: 2}],
-    [{item: "Egg", cost: 3}],
-    [{item: "Beetroot", cost: 2}],
-    [{item: "Ketchup", cost: 1}],
-    [{item: "BBQ", cost: 1}],
-    [{item: "House Sauce", cost: 1}],
-    [{item: "Mustard", cost: 1}],
-    [{item: "Sriracha", cost: 1}],
-    [{item: "Aioli", cost: 1}],
-    [{item: "Mayo", cost: 1}],
-    [{item: "Chipotle", cost: 1}]
-]
 
 burger = []
 burger_cost = 0
@@ -47,88 +19,131 @@ when
     burger << "No bun"
 end
 
-patty_choices = %w[Beef Chicken Lamb Vegetarian None]
-patty = prompt.select("Now which patty would you like on your burger?", patty_choices)
+patty_choices = [
+    {item: "Beef", cost: 3},
+    {item: "Chicken", cost: 3},
+    {item: "Lamb", cost: 4 },
+    {item: "Vegetarian", cost: 3},
+    {item: "No Patty", cost: 0}
+]
+
+patty = prompt.select("Now which patty would you like on your burger?", patty_choices.map {|i| i[:item]})
 
 case
 when 
     patty == "Beef"
     burger << "Beef patty"
-    burger_cost += ingredients[0][0][:cost]
+    burger_cost += patty_choices[0][:cost]
 when 
     patty == "Chicken"
     burger << "Chicken patty"
-    burger_cost += ingredients[1][0][:cost]
+    burger_cost += patty_choices[0][:cost]
 when 
     patty == "Lamb"
     burger << "Lamb patty"
-    burger_cost += ingredients[2][0][:cost]
+    burger_cost += patty_choices[0][:cost]
 when 
     patty == "Vegetarian"
     burger << "Vegetarian patty"
-    burger_cost += ingredients[3][0][:cost]
+    burger_cost += patty_choices[0][:cost]
 when 
     patty == "None"
     burger << "No patty"
 end
 
-cheese_choices = %w[Cheddar Tasty Swiss Feta None]
-cheese = prompt.select("Next select which cheese you would like", cheese_choices)
+cheese_choices = [
+    {item: "Cheddar", cost: 1},
+    {item: "Tasty", cost: 1},
+    {item: "Swiss", cost: 1},
+    {item: "Feta", cost: 2},
+    {item: "No Cheese", cost: 0}
+]
+cheese = prompt.select("Next select which cheese you would like", cheese_choices.map {|i| i[:item]})
 
 case
 when 
     cheese == "Cheddar"
     burger << "Cheddar cheese"
-    burger_cost += ingredients[5][0][:cost]
+    burger_cost += cheese_choices[0][:cost]
 when 
     cheese == "Tasty"
     burger << "Tasty cheese"
-    burger_cost += ingredients[6][0][:cost]
+    burger_cost += cheese_choices[0][:cost]
 when 
     cheese == "Swiss"
     burger << "Swiss cheese"
-    burger_cost += ingredients[7][0][:cost]
+    burger_cost += cheese_choices[0][:cost]
 when 
     cheese == "Feta"
     burger << "Feta cheese"
-    burger_cost += ingredients[8][0][:cost]
+    burger_cost += cheese_choices[0][:cost]
 when 
     cheese == "None"
     burger << "No cheese"
 end
 
+p burger_cost
 
 
-salad_choices = %w(Lettuce 
-    Tomato
-    Onion
-    Mushroom
-    Avocado
-    Pickles
-    Egg
-    Beetroot
-    )
-salads = prompt.multi_select("Select all the salads you want!", salad_choices)
+salad_choices = [
+    {item: "Lettuce", cost: 1},
+    {item: "Tomato", cost: 1},
+    {item: "Onion", cost: 1},
+    {item: "Mushroom", cost: 2},
+    {item: "Avocado", cost: 3},
+    {item: "Pickles", cost: 2},
+    {item: "Egg", cost: 3},
+    {item: "Beetroot", cost: 2}
+]
 
-def separate_array(array, burger)
-    array.map! do |ingredient|
-        burger << ingredient
+salads = prompt.multi_select("Select all the salads you want!", salad_choices.map {|i| i[:item]})
+p salads
+
+def salad_select(options, choices_array, burger_cost)
+    choices = []
+    choices_array.each do |item|
+        choice = options.find do |s|
+            s[:item] == item
+        end
+        choices << choice
+    end
+    choices.map do |ingredient|
+        p burger_cost += ingredient[:cost]
     end
 end
 
-separate_array(salads, burger)
+p salad_select(salad_choices, salads, burger_cost)
 
-sauce_choices = ["Ketchup",
-    "BBQ",
-    "House Sauce",
-    "Mustard",
-    "Sriracha",
-    "Aioli",
-    "Mayo",
-    "Chipotle"
+# def add_cost(salad_select, burger_cost)
+#     salad_select.map do |ingredient|
+#         burger_cost += ingredient[:cost]
+#     end
+#     burger_cost
+# end
+
+# p add_cost(mini, burger_cost)
+# p  burger_cost
+
+# def separate_array(array, burger)
+#     array.map! do |ingredient|
+#         burger << ingredient
+#     end
+# end
+
+# add_cost(salad_choices, burger_cost)
+# p burger_cost
+# separate_array(salads, burger)
+
+sauce_choices = [
+    {item: "Ketchup", cost: 1},
+    {item: "BBQ", cost: 1},
+    {item: "House Sauce", cost: 1},
+    {item: "Mustard", cost: 1},
+    {item: "Sriracha", cost: 1},
+    {item: "Aioli", cost: 1},
+    {item: "Mayo", cost: 1},
+    {item: "Chipotle", cost: 1}
 ]
-sauces = prompt.multi_select("Would you like any sauce?", sauce_choices)
+sauces = prompt.multi_select("Would you like any sauce?", sauce_choices.map {|i| i[:item]})
 
 separate_array(sauces, burger)
-puts burger
-puts burger_cost
