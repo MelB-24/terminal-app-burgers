@@ -1,13 +1,16 @@
 require 'pry'
 require 'colorize'
 require 'tty-prompt'
+require 'tty-font'
+require 'csv'
 prompt = TTY::Prompt.new
+font = TTY::Font.new(:standard)
 
 burger = []
 burger_cost = 0
 
-p "Welcome to Mel's Burgers"
-p "Let's start with a bun."
+puts font.write("Welcome to MelBurg")
+puts "Let's start with a bun.".colorize(:magenta)
 bun = prompt.yes?('Would you like a bun?')
 
 case
@@ -82,8 +85,6 @@ when
     burger << "No cheese"
 end
 
-p burger_cost
-
 
 salad_choices = [
     {item: "Lettuce", cost: 1},
@@ -97,9 +98,8 @@ salad_choices = [
 ]
 
 salads = prompt.multi_select("Select all the salads you want!", salad_choices.map {|i| i[:item]})
-p salads
 
-def salad_select(options, choices_array, burger_cost)
+def add_cost(options, choices_array, burger_cost)
     choices = []
     choices_array.each do |item|
         choice = options.find do |s|
@@ -107,32 +107,23 @@ def salad_select(options, choices_array, burger_cost)
         end
         choices << choice
     end
-    choices.map do |ingredient|
-        p burger_cost += ingredient[:cost]
+    choices.each do |ingredient|
+        burger_cost += ingredient[:cost]
+    end
+    burger_cost
+end
+
+
+add_cost(salad_choices, salads, burger_cost)
+
+
+def separate_array(array, burger)
+    array.map! do |ingredient|
+        burger << ingredient
     end
 end
 
-p salad_select(salad_choices, salads, burger_cost)
-
-# def add_cost(salad_select, burger_cost)
-#     salad_select.map do |ingredient|
-#         burger_cost += ingredient[:cost]
-#     end
-#     burger_cost
-# end
-
-# p add_cost(mini, burger_cost)
-# p  burger_cost
-
-# def separate_array(array, burger)
-#     array.map! do |ingredient|
-#         burger << ingredient
-#     end
-# end
-
-# add_cost(salad_choices, burger_cost)
-# p burger_cost
-# separate_array(salads, burger)
+separate_array(salads, burger)
 
 sauce_choices = [
     {item: "Ketchup", cost: 1},
@@ -146,4 +137,15 @@ sauce_choices = [
 ]
 sauces = prompt.multi_select("Would you like any sauce?", sauce_choices.map {|i| i[:item]})
 
+add_cost(sauce_choices, sauces, burger_cost)
 separate_array(sauces, burger)
+
+p "You're burger order is #{burger.join(", ")}"
+
+#### this is where i want the ASCII art
+
+CSV.open("burger-storage.csv", "a+") do |csv|
+    csv << [burger_cost,burger.join(", ")]
+end
+
+p "Thanks for eating at Mel's Burgers!!!"
