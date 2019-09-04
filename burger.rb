@@ -11,16 +11,29 @@ burger_cost = 0
 
 puts font.write("Welcome to MelBurg")
 puts "Let's start with a bun.".colorize(:magenta)
-bun = prompt.yes?('Would you like a bun?')
 
-case
-when 
-    bun == true
-    burger << "Bun"
-when 
-    bun == false
-    burger << "No bun"
-end
+def handle_bun(bun, burger)
+    case bun
+    when true
+        bun == true
+        burger << "Bun"
+    when false
+        bun == false
+        burger << "No bun"
+    end
+end 
+
+def first_prompt(prompt, burger)
+    begin
+        bun = prompt.yes?('Would you like a bun?')  
+        handle_bun(bun, burger)
+    rescue => exception 
+        first_prompt(prompt, burger)
+    end
+end 
+
+first_prompt(prompt, burger)
+
 
 patty_choices = [
     {item: "Beef", cost: 3},
@@ -114,7 +127,7 @@ def add_cost(options, choices_array, burger_cost)
 end
 
 
-add_cost(salad_choices, salads, burger_cost)
+add_cost(salad_choices, sal ads, burger_cost)
 
 
 def separate_array(array, burger)
