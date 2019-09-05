@@ -64,7 +64,9 @@ when
     burger << 'No patty'
 end
 
+puts "------------------------------------------------".colorize(:red)
 puts "We've added #{patty} to your order".colorize(:red)
+puts "------------------------------------------------".colorize(:red)
 
 cheese_choices = [
     { item: 'Cheddar', cost: 1 },
@@ -97,7 +99,9 @@ when
     burger << 'No cheese'
 end
 
+puts "------------------------------------------------".colorize(:light_yellow)
 puts "We've added #{cheese} to your order".colorize(:light_yellow)
+puts "------------------------------------------------".colorize(:light_yellow)
 
 salad_choices = [
     { item: 'Lettuce', cost: 1 },
@@ -135,7 +139,9 @@ end
 burger_cost = add_cost(salad_choices, salads, burger_cost)
 separate_array(salads, burger)
 
+puts "------------------------------------------------".colorize(:blue)
 puts "We've added your salads to your order".colorize(:blue)
+puts "------------------------------------------------".colorize(:blue)
 
 sauce_choices = [
     { item: 'Ketchup', cost: 1 },
@@ -151,10 +157,15 @@ sauces = prompt.multi_select('Would you like any sauce?', sauce_choices.map { |i
 
 burger_cost = add_cost(sauce_choices, sauces, burger_cost)
 separate_array(sauces, burger)
-puts "We've added your sauces to your order".colorize(:light_cyan)
 
+puts "------------------------------------------------".colorize(:light_cyan)
+puts "We've added your sauces to your order".colorize(:light_cyan)
+puts "------------------------------------------------".colorize(:light_cyan)
+
+puts "************************************************".colorize(:green)
 p "Your burger order is #{burger.join(', ')}"
 p "Your burger costs $#{burger_cost}.00"
+puts "************************************************".colorize(:green)
 
 #### this is where i want the ASCII art
 
