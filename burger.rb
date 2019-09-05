@@ -3,68 +3,68 @@ require 'colorize'
 require 'tty-prompt'
 require 'tty-font'
 require 'csv'
+# require_relative 'ascii.rb'
 prompt = TTY::Prompt.new
 font = TTY::Font.new(:standard)
 
 burger = []
 burger_cost = 0
 
-puts font.write('Welcome to MelBurg')
-puts "Let's start with a bun."
+puts font.write('MelBurg')
+puts "Welcome #{ARGV[0]}"
+puts "Let's start with a bun.".colorize(:magenta)
 
 def handle_bun(bun, burger)
-    case bun
-    when true
-        burger << 'Bun'
-        puts '------------------------------------------------'.colorize(:yellow)
-        puts "We've added Bun to your order".colorize(:yellow)
-        puts '------------------------------------------------'.colorize(:yellow)
-    when false
-        burger << 'No bun'
-    end
+  case bun
+  when true
+    burger << 'Bun'
+    puts '------------------------------------------------'.colorize(:yellow)
+    puts "We've added Bun to your order".colorize(:yellow)
+    puts '------------------------------------------------'.colorize(:yellow)
+  when false
+    burger << 'No bun'
+	end
 end
 
 def first_prompt(prompt, burger)
-    begin
-        bun = prompt.yes?('Would you like a bun?')
-        handle_bun(bun, burger)
-    rescue => exception
-        first_prompt(prompt, burger)
-    end
+  bun = prompt.yes?('Would you like a bun?')
+  handle_bun(bun, burger)
+rescue
+  first_prompt(prompt, burger)
 end
 
 first_prompt(prompt, burger)
 
 patty_choices = [
-    { item: 'Beef', cost: 3 },
-    { item: 'Chicken', cost: 3 },
-    { item: 'Lamb', cost: 4 },
-    { item: 'Vegetarian', cost: 3 },
-    { item: 'No Patty', cost: 0 }
+  { item: 'Beef', cost: 3 },
+  { item: 'Chicken', cost: 3 },
+  { item: 'Lamb', cost: 4 },
+  { item: 'Vegetarian', cost: 3 },
+  { item: 'No Patty', cost: 0 }
 ]
 
 patty = prompt.select('Now which patty would you like on your burger?', patty_choices.map { |i| i[:item] })
 
 case patty
 when
-    'Beef'
-    burger << 'Beef patty'
-    burger_cost += patty_choices[0][:cost]
+  'Beef'
+  burger << 'Beef patty'
+  burger_cost += patty_choices[0][:cost]
 when
-    'Chicken'
-    burger << 'Chicken patty'
-    burger_cost += patty_choices[0][:cost]
+  'Chicken'
+  burger << 'Chicken patty'
+  burger_cost += patty_choices[0][:cost]
 when
-    'Lamb'
-    burger << 'Lamb patty'
-    burger_cost += patty_choices[0][:cost]
+  'Lamb'
+  burger << 'Lamb patty'
+  burger_cost += patty_choices[0][:cost]
 when
-    'Vegetarian'
-    burger << 'Vegetarian patty'
-    burger_cost += patty_choices[0][:cost]
+  'Vegetarian'
+  burger << 'Vegetarian patty'
+  burger_cost += patty_choices[0][:cost]
 when
-    'None'
-    burger << 'No patty'
+  'None'
+  burger << 'No patty'
 end
 
 puts '------------------------------------------------'.colorize(:red)
@@ -72,34 +72,34 @@ puts "We've added #{patty} to your order".colorize(:red)
 puts '------------------------------------------------'.colorize(:red)
 
 cheese_choices = [
-    { item: 'Cheddar', cost: 1 },
-    { item: 'Tasty', cost: 1 },
-    { item: 'Swiss', cost: 1 },
-    { item: 'Feta', cost: 2 },
-    { item: 'No Cheese', cost: 0 }
+  { item: 'Cheddar', cost: 1 },
+  { item: 'Tasty', cost: 1 },
+  { item: 'Swiss', cost: 1 },
+  { item: 'Feta', cost: 2 },
+  { item: 'No Cheese', cost: 0 }
 ]
 cheese = prompt.select('Next select which cheese you would like', cheese_choices.map { |i| i[:item] })
 
 case cheese
 when
-    'Cheddar'
-    burger << 'Cheddar cheese'
-    burger_cost += cheese_choices[0][:cost]
+  'Cheddar'
+  burger << 'Cheddar cheese'
+  burger_cost += cheese_choices[0][:cost]
 when
-    'Tasty'
-    burger << 'Tasty cheese'
-    burger_cost += cheese_choices[0][:cost]
+  'Tasty'
+  burger << 'Tasty cheese'
+  burger_cost += cheese_choices[0][:cost]
 when
-    'Swiss'
-    burger << 'Swiss cheese'
-    burger_cost += cheese_choices[0][:cost]
+  'Swiss'
+  burger << 'Swiss cheese'
+  burger_cost += cheese_choices[0][:cost]
 when
-    'Feta'
-    burger << 'Feta cheese'
-    burger_cost += cheese_choices[0][:cost]
+  'Feta'
+  burger << 'Feta cheese'
+  burger_cost += cheese_choices[0][:cost]
 when
-    'None'
-    burger << 'No cheese'
+  'None'
+  burger << 'No cheese'
 end
 
 puts '------------------------------------------------'.colorize(:light_yellow)
@@ -107,36 +107,36 @@ puts "We've added #{cheese} to your order".colorize(:light_yellow)
 puts '------------------------------------------------'.colorize(:light_yellow)
 
 salad_choices = [
-    { item: 'Lettuce', cost: 1 },
-    { item: 'Tomato', cost: 1 },
-    { item: 'Onion', cost: 1 },
-    { item: 'Mushroom', cost: 2 },
-    { item: 'Avocado', cost: 3 },
-    { item: 'Pickles', cost: 2 },
-    { item: 'Egg', cost: 3 },
-    { item: 'Beetroot', cost: 2 }
+  { item: 'Lettuce', cost: 1 },
+  { item: 'Tomato', cost: 1 },
+  { item: 'Onion', cost: 1 },
+  { item: 'Mushroom', cost: 2 },
+  { item: 'Avocado', cost: 3 },
+  { item: 'Pickles', cost: 2 },
+  { item: 'Egg', cost: 3 },
+  { item: 'Beetroot', cost: 2 }
 ]
 
 salads = prompt.multi_select('Select all the salads you want!', salad_choices.map { |i| i[:item] })
 
 def add_cost(options, choices_array, burger_cost)
-    choices = []
-    choices_array.each do |item|
-        choice = options.find do |s|
-            s[:item] == item
-        end
-        choices << choice
+  choices = []
+  choices_array.each do |item|
+    choice = options.find do |s|
+      s[:item] == item
     end
-    choices.each do |ingredient|
-        burger_cost += ingredient[:cost]
-    end
-    burger_cost
+    choices << choice
+  end
+  choices.each do |ingredient|
+    burger_cost += ingredient[:cost]
+  end
+  burger_cost
 end
 
 def separate_array(array, burger)
-    array.map! do |ingredient|
-        burger << ingredient
-    end
+  array.map! do |ingredient|
+    burger << ingredient
+  end
 end
 
 burger_cost = add_cost(salad_choices, salads, burger_cost)
@@ -147,14 +147,14 @@ puts "We've added your salads to your order".colorize(:blue)
 puts '------------------------------------------------'.colorize(:blue)
 
 sauce_choices = [
-    { item: 'Ketchup', cost: 1 },
-    { item: 'BBQ', cost: 1 },
-    { item: 'House Sauce', cost: 1 },
-    { item: 'Mustard', cost: 1 },
-    { item: 'Sriracha', cost: 1 },
-    { item: 'Aioli', cost: 1 },
-    { item: 'Mayo', cost: 1 },
-    { item: 'Chipotle', cost: 1 }
+  { item: 'Ketchup', cost: 1 },
+  { item: 'BBQ', cost: 1 },
+  { item: 'House Sauce', cost: 1 },
+  { item: 'Mustard', cost: 1 },
+  { item: 'Sriracha', cost: 1 },
+  { item: 'Aioli', cost: 1 },
+  { item: 'Mayo', cost: 1 },
+  { item: 'Chipotle', cost: 1 }
 ]
 sauces = prompt.multi_select('Would you like any sauce?', sauce_choices.map { |i| i[:item] })
 
@@ -170,10 +170,11 @@ p "Your burger order is #{burger.join(', ')}"
 p "Your burger costs $#{burger_cost}.00"
 puts '************************************************'.colorize(:green)
 
-#### this is where i want the ASCII art
+# burger_image = burger
+# p burger_image
 
 CSV.open('burger-storage.csv', 'a+') do |csv|
-    csv << [burger_cost, burger.join(', ')]
+  csv << [burger_cost, burger.join(', ')]
 end
 
 puts 'Thanks for eating at MelBurg!!!'.colorize(:light_magenta).bold
