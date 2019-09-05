@@ -45,25 +45,25 @@ patty_choices = [
 
 patty = prompt.select("Now which patty would you like on your burger?", patty_choices.map {|i| i[:item]})
 
-case
+case patty
 when 
-    patty == "Beef"
+    "Beef"
     burger << "Beef patty"
     burger_cost += patty_choices[0][:cost]
 when 
-    patty == "Chicken"
+    "Chicken"
     burger << "Chicken patty"
     burger_cost += patty_choices[0][:cost]
 when 
-    patty == "Lamb"
+    "Lamb"
     burger << "Lamb patty"
     burger_cost += patty_choices[0][:cost]
 when 
-    patty == "Vegetarian"
+    "Vegetarian"
     burger << "Vegetarian patty"
     burger_cost += patty_choices[0][:cost]
 when 
-    patty == "None"
+    "None"
     burger << "No patty"
 end
 
@@ -76,25 +76,25 @@ cheese_choices = [
 ]
 cheese = prompt.select("Next select which cheese you would like", cheese_choices.map {|i| i[:item]})
 
-case
+case cheese
 when 
-    cheese == "Cheddar"
+    "Cheddar"
     burger << "Cheddar cheese"
     burger_cost += cheese_choices[0][:cost]
 when 
-    cheese == "Tasty"
+    "Tasty"
     burger << "Tasty cheese"
     burger_cost += cheese_choices[0][:cost]
 when 
-    cheese == "Swiss"
+    "Swiss"
     burger << "Swiss cheese"
     burger_cost += cheese_choices[0][:cost]
 when 
-    cheese == "Feta"
+    "Feta"
     burger << "Feta cheese"
     burger_cost += cheese_choices[0][:cost]
 when 
-    cheese == "None"
+    "None"
     burger << "No cheese"
 end
 
@@ -126,16 +126,13 @@ def add_cost(options, choices_array, burger_cost)
     burger_cost
 end
 
-
-add_cost(salad_choices, sal ads, burger_cost)
-
-
 def separate_array(array, burger)
     array.map! do |ingredient|
         burger << ingredient
     end
 end
 
+burger_cost = add_cost(salad_choices, salads, burger_cost)
 separate_array(salads, burger)
 
 sauce_choices = [
@@ -150,7 +147,7 @@ sauce_choices = [
 ]
 sauces = prompt.multi_select("Would you like any sauce?", sauce_choices.map {|i| i[:item]})
 
-add_cost(sauce_choices, sauces, burger_cost)
+burger_cost = add_cost(sauce_choices, sauces, burger_cost)
 separate_array(sauces, burger)
 
 p "You're burger order is #{burger.join(", ")}"
@@ -161,4 +158,4 @@ CSV.open("burger-storage.csv", "a+") do |csv|
     csv << [burger_cost,burger.join(", ")]
 end
 
-p "Thanks for eating at Mel's Burgers!!!"
+puts "Thanks for eating at MelBurg!!!"
