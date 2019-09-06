@@ -3,7 +3,7 @@ require 'colorize'
 require 'tty-prompt'
 require 'tty-font'
 require 'csv'
-# require_relative 'ascii.rb'
+require_relative 'ascii.rb'
 prompt = TTY::Prompt.new
 font = TTY::Font.new(:standard)
 
@@ -170,8 +170,20 @@ p "Your burger order is #{burger.join(', ')}"
 p "Your burger costs $#{burger_cost}.00"
 puts '************************************************'.colorize(:green)
 
-# burger_image = burger
-# p burger_image
+
+burger_image_one
+sleep(1)
+burger_image_two
+sleep(1)
+burger_image_three
+sleep(1)
+burger_image_four
+sleep(1)
+burger_image_five
+sleep(1)
+burger_image_six
+sleep(1)
+burger_image_seven
 
 CSV.open('burger-storage.csv', 'a+') do |csv|
   csv << [burger_cost, burger.join(', ')]
